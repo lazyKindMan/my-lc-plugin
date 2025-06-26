@@ -31,3 +31,22 @@ func PrintList(l *ListNode) {
 		cur = cur.Next
 	}
 }
+
+func IsEqual(l1, l2 *ListNode) bool {
+	for l1 != nil && l2 != nil {
+		if l1.Val != l2.Val {
+			return false
+		}
+		l1, l2 = l1.Next, l2.Next
+	}
+	return l1 == nil && l2 == nil
+}
+
+func ListToSlice(head *ListNode) []int {
+	var result []int
+	for head != nil {
+		result = append(result, head.Val)
+		head = head.Next
+	}
+	return result
+}
