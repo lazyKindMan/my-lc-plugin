@@ -1,0 +1,42 @@
+时间复杂度：O（n）：
+
+* 
+
+```
+public int[] maxSubsequence(int[] nums, int k) {
+       PriorityQueue<Integer> pq=new PriorityQueue<>(new Comparator<Integer>() {
+           @Override
+           public int compare(Integer o1, Integer o2) {
+               return o2-o1;
+           }
+       });
+       //用优先队列维护前K个最大的值
+       for (int num : nums) {
+           pq.add(num);
+       }
+     HashMap<Integer,Integer> map=new HashMap<>();
+       for (int i = 0; i < k-1; i++) {
+           int t=pq.poll();
+         map.put(t,map.getOrDefault(t,0)+1);//将前k-1个元素存储并且记录，方便统计前面k-1个到底有多少元素与临界值min大小一样
+       }
+       int min=pq.poll();//临界值
+       map.put(min,map.getOrDefault(min,0)+1);//将临界值也放入map里面，防止查找min对应的value值（即与min相等的个数）时空指针异常
+       int count=map.get(min);//注意如果map没有min的话，会出现空指针异常
+       int arr[]=new int[k];
+       for (int i = 0,j=-1; i < nums.length; i++) {
+           if(min<nums[i]){//num【i】>min肯定可以放入数组中
+               arr[++j]=nums[i];
+           }
+           else if(min==nums[i]){
+               //if(count<=1)//注意没必要多写一个判断
+               //    break;
+               if(count>0) {//count记录目前还能再添加多少个min
+                   arr[++j]=nums[i];
+                   count--;
+               }
+           }
+       }
+       return arr;
+   }
+```
+
